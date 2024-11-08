@@ -1,4 +1,52 @@
-import { Controller } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Param,
+	Post,
+	Put,
+} from "@nestjs/common";
+
+import { CreateUserDto, UpdatePasswordDto, UserIdDto } from "./dto";
+import { UserService } from "./user.service";
 
 @Controller("user")
-export class UserController {}
+export class UserController {
+	constructor(private readonly userService: UserService) {}
+
+	@HttpCode(HttpStatus.OK)
+	@Get()
+	getAll() {
+		return this.userService.getAll();
+	}
+
+	@HttpCode(HttpStatus.OK)
+	@Get(":id")
+	getById(@Param() dto: UserIdDto) {
+		return this.userService.getById(dto.id);
+	}
+
+	@HttpCode(HttpStatus.CREATED)
+	@Post()
+	create(@Body() dto: CreateUserDto) {
+		return this.userService.create(dto);
+	}
+
+	@HttpCode(HttpStatus.OK)
+	@Put(":id")
+	updatePassword(
+		@Param() userIdDto: UserIdDto,
+		@Body() dto: UpdatePasswordDto,
+	) {
+		return this.userService.updatePassword(userIdDto.id, dto);
+	}
+
+	@HttpCode(HttpStatus.NO_CONTENT)
+	@Delete(":id")
+	delete(@Param() dto: UserIdDto) {
+		return this.userService.delete(dto.id);
+	}
+}
