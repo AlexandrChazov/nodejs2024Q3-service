@@ -33,7 +33,6 @@ export class AlbumService {
 		album.name = dto.name;
 		album.year = dto.year;
 		album.artistId = dto.artistId || null;
-		database.albums.push(album);
 		return album;
 	}
 
