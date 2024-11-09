@@ -46,7 +46,9 @@ export class UserService {
 			throw new ForbiddenException("Forbidden");
 		}
 		user.password = dto.newPassword;
-		return user;
+		user.version += 1;
+		user.updatedAt = new Date().getTime();
+		return { ...user, password: undefined };
 	}
 
 	async delete(id: string) {
