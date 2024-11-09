@@ -42,6 +42,14 @@ export class ArtistService {
 		if (!~index) {
 			throw new NotFoundException("Artist not found");
 		}
+		const track = database.tracks.find((t) => t.artistId === id);
+		if (track) {
+			track.artistId = null;
+		}
+		const album = database.albums.find((a) => a.artistId === id);
+		if (album) {
+			album.artistId = null;
+		}
 		database.artists.splice(index, 1);
 	}
 }

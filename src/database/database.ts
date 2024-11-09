@@ -5,13 +5,17 @@ export const database: IDatabase = {
 	artists: [],
 	tracks: [],
 	albums: [],
-	favorites: [],
+	favorites: {
+		artists: [],
+		tracks: [],
+		albums: [],
+	},
 };
 
 interface IDatabase {
 	albums: Album[];
 	artists: Artist[];
-	favorites: Favorites[];
+	favorites: Favorites;
 	tracks: Track[];
 	users: User[];
 }

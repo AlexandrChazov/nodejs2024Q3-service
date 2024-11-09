@@ -39,6 +39,10 @@ export class AlbumService {
 	async delete(id: string) {
 		const index = database.albums.findIndex((a) => a.id === id);
 		if (!~index) throw new NotFoundException("Album not found");
+		const track = database.tracks.find((t) => t.albumId === id);
+		if (track) {
+			track.albumId = null;
+		}
 		database.albums.splice(index, 1);
 	}
 }
