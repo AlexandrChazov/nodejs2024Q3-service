@@ -10,7 +10,8 @@ import {
 	Put,
 } from "@nestjs/common";
 
-import { CreateUserDto, UpdatePasswordDto, UserIdDto } from "./dto";
+import { IdDto } from "../dto";
+import { CreateUserDto, UpdatePasswordDto } from "./dto";
 import { UserService } from "./user.service";
 
 @Controller("user")
@@ -25,7 +26,7 @@ export class UserController {
 
 	@HttpCode(HttpStatus.OK)
 	@Get(":id")
-	getById(@Param() dto: UserIdDto) {
+	getById(@Param() dto: IdDto) {
 		return this.userService.getById(dto.id);
 	}
 
@@ -37,16 +38,13 @@ export class UserController {
 
 	@HttpCode(HttpStatus.OK)
 	@Put(":id")
-	updatePassword(
-		@Param() userIdDto: UserIdDto,
-		@Body() dto: UpdatePasswordDto,
-	) {
+	updatePassword(@Param() userIdDto: IdDto, @Body() dto: UpdatePasswordDto) {
 		return this.userService.updatePassword(userIdDto.id, dto);
 	}
 
 	@HttpCode(HttpStatus.NO_CONTENT)
 	@Delete(":id")
-	delete(@Param() dto: UserIdDto) {
+	delete(@Param() dto: IdDto) {
 		return this.userService.delete(dto.id);
 	}
 }

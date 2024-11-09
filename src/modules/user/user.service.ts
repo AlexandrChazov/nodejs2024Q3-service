@@ -16,7 +16,6 @@ export class UserService {
 	}
 
 	async getById(id: string) {
-		console.log("id", id);
 		const user = database.users.find((user) => user.id === id);
 		if (!user) {
 			throw new NotFoundException("User not found");
