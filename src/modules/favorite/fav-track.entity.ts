@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { TrackEntity } from "../track/track.entity";
 
@@ -6,6 +6,11 @@ import { TrackEntity } from "../track/track.entity";
 export class FavTrackEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
+
+	// todo make sure it's NOT NULL
+	// it's not necessary to specify, get type error without it
+	@Column("uuid")
+	trackId: string;
 
 	@ManyToOne(() => TrackEntity, (artist) => artist.favTracks)
 	track: TrackEntity;
