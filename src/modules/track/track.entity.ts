@@ -18,11 +18,13 @@ export class TrackEntity {
 	@Column({ type: "varchar", length: 255 })
 	name: string;
 
-	// @Column({ type: "uuid", nullable: true })
-	// artistId: string | null; // refers to Artist
+	// it's not necessary to specify, get type error without it
+	@Column({ type: "uuid", nullable: true })
+	artistId: string | null; // refers to Artist
 
-	// @Column({ type: "uuid", nullable: true })
-	// albumId: string | null; // refers to Album
+	// it's not necessary to specify, get type error without it
+	@Column({ type: "uuid", nullable: true })
+	albumId: string | null; // refers to Album
 
 	@Column({ type: "int", unsigned: true })
 	duration: number; // integer number
