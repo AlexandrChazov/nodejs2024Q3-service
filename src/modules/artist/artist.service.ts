@@ -1,55 +1,52 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { randomUUID } from "node:crypto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
-import { database } from "../../database";
-import { Artist, User } from "../../types";
+import { Artist } from "../../types";
+import { ArtistEntity } from "./artist.entity";
 import { CreateDto, UpdateDto } from "./dto";
 
 @Injectable()
 export class ArtistService {
-	async getAll() {
-		return database.artists;
+	constructor(
+		@InjectRepository(ArtistEntity)
+		private artistRepository: Repository<Artist>,
+	) {}
+
+	async getAll(): Promise<Artist[]> {
+		return await this.artistRepository.find();
 	}
 
 	async getById(id: string) {
-		const artist = database.artists.find((a) => a.id === id);
+		const artist = await this.artistRepository.findOne({ where: { id } });
 		if (!artist) throw new NotFoundException("Artist not found");
 		return artist;
 	}
 
 	async create(dto: CreateDto) {
-		const newArtist: Artist = {
-			id: randomUUID(),
-			name: dto.name,
-			grammy: dto.grammy,
-		};
-		database.artists.push(newArtist);
-		return newArtist;
+		const artist = new ArtistEntity();
+		artist.name = dto.name;
+		artist.grammy = dto.grammy;
+		await this.artistRepository.save(artist);
+		return artist;
 	}
 
 	async update(id: string, dto: UpdateDto) {
-		const artist = database.artists.find((a) => a.id === id);
+		const artist = await this.artistRepository.findOne({ where: { id } });
 		if (!artist) {
 			throw new NotFoundException("Artist not found");
 		}
 		artist.name = dto.name;
 		artist.grammy = dto.grammy;
+		await this.artistRepository.save(artist);
 		return artist;
 	}
 
 	async delete(id: string) {
-		const index = database.artists.findIndex((a) => a.id === id);
-		if (!~index) {
+		const artist = await this.artistRepository.findOne({ where: { id } });
+		if (!artist) {
 			throw new NotFoundException("Artist not found");
 		}
-		const track = database.tracks.find((t) => t.artistId === id);
-		if (track) {
-			track.artistId = null;
-		}
-		const album = database.albums.find((a) => a.artistId === id);
-		if (album) {
-			album.artistId = null;
-		}
-		database.artists.splice(index, 1);
+		await this.artistRepository.delete(id);
 	}
 }
