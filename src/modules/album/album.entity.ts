@@ -21,11 +21,13 @@ export class AlbumEntity {
 	@Column({ type: "int", unsigned: true })
 	year: number;
 
-	// it's not necessary to specify, get type error without it
 	@Column({ type: "uuid", nullable: true })
 	artistId: string | null; // refers to Artist
 
-	@ManyToOne(() => ArtistEntity, (artist) => artist.albums)
+	@ManyToOne(() => ArtistEntity, (artist) => artist.albums, {
+		onDelete: "SET NULL",
+		onUpdate: "CASCADE",
+	})
 	artist: ArtistEntity;
 
 	@OneToMany(() => TrackEntity, (track) => track.artist)

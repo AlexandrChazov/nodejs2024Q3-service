@@ -7,11 +7,12 @@ export class FavTrackEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	// todo make sure it's NOT NULL
-	// it's not necessary to specify, get type error without it
 	@Column("uuid")
 	trackId: string;
 
-	@ManyToOne(() => TrackEntity, (artist) => artist.favTracks)
+	@ManyToOne(() => TrackEntity, (artist) => artist.favTracks, {
+		onDelete: "CASCADE",
+		onUpdate: "CASCADE",
+	})
 	track: TrackEntity;
 }

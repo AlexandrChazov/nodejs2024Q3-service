@@ -18,21 +18,25 @@ export class TrackEntity {
 	@Column({ type: "varchar", length: 255 })
 	name: string;
 
-	// it's not necessary to specify, get type error without it
 	@Column({ type: "uuid", nullable: true })
 	artistId: string | null; // refers to Artist
 
-	// it's not necessary to specify, get type error without it
 	@Column({ type: "uuid", nullable: true })
 	albumId: string | null; // refers to Album
 
 	@Column({ type: "int", unsigned: true })
 	duration: number; // integer number
 
-	@ManyToOne(() => ArtistEntity, (artist) => artist.tracks)
+	@ManyToOne(() => ArtistEntity, (artist) => artist.tracks, {
+		onDelete: "SET NULL",
+		onUpdate: "CASCADE",
+	})
 	artist: ArtistEntity;
 
-	@ManyToOne(() => AlbumEntity, (album) => album.tracks)
+	@ManyToOne(() => AlbumEntity, (album) => album.tracks, {
+		onDelete: "SET NULL",
+		onUpdate: "CASCADE",
+	})
 	album: AlbumEntity;
 
 	@OneToMany(() => FavTrackEntity, (fav) => fav.track)

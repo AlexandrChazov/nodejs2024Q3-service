@@ -7,11 +7,12 @@ export class FavArtistEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	// todo make sure it's NOT NULL
-	// it's not necessary to specify, get type error without it
 	@Column("uuid")
 	artistId: string;
 
-	@ManyToOne(() => ArtistEntity, (artist) => artist.favArtists)
+	@ManyToOne(() => ArtistEntity, (artist) => artist.favArtists, {
+		onDelete: "CASCADE",
+		onUpdate: "CASCADE",
+	})
 	artist: ArtistEntity;
 }
