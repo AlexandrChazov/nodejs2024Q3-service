@@ -1,0 +1,20 @@
+services:
+  server:
+    build: .
+    container_name: server
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - db
+    volumes:
+      - ./src:/server/src
+      - /server/node_modules
+
+  db:
+    build: ./postgres_db
+    container_name: db
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
