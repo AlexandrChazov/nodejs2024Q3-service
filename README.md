@@ -12,7 +12,7 @@ Score: 760/760
 - checkout to the 'dev' branch: `git checkout dev`
 - install dependencies: `npm install`
 - start Docker desktop app locally on your machine
-- run docker container: `docker-compose up`
+- run docker container: `docker compose up`
 
 ## Steps to check:
 Make sure the `README.md` file contains detailed instructions for installing, running and using the application (+10) \
