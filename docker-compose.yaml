@@ -9,6 +9,8 @@ services:
     volumes:
       - ./src:/server/src
       - /server/node_modules
+    networks:
+      - backend
 
   db:
     build: ./postgres_db
@@ -18,3 +20,9 @@ services:
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
