@@ -42,10 +42,12 @@ Score: 310/360
 - +20 Your built image is pushed to DockerHub
   - `image: alexandrchazov/nodejs2024q3-service-server:latest`
   - `image: alexandrchazov/nodejs2024q3-service-db:latest`
+- +20 Final size of the Docker image with application is less than 500 MB
 
 
 - +30 Migrations are used to create database entities
+  - `CMD ["sh", "-c", "npm run migration:run && npm run start:dev"]`
 - +10 typeorm decorators create relations between entities
 - +30 Local PostgreSQL installation is not required for task check, connection is implemented to database stored in docker container
 
-### Total score: 330/360
+### Total score: 350/360

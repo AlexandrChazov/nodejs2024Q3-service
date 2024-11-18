@@ -4,10 +4,10 @@ WORKDIR /server
 
 COPY package*.json ./
 
-RUN npm install && npm cache clean --force
+RUN npm ci && npm cache clean --force
 
 COPY . .
 
 EXPOSE ${SERVER_PORT}
 
-CMD ["npm", "run", "start:dev"]
+CMD ["sh", "-c", "npm run migration:run && npm run start:dev"]
