@@ -17,10 +17,15 @@ Score: 760/760
 ## Steps to check:
 ### 1) Cotainerization, Docker
 - +20 Readme.md has instruction how to run application
-- +30 user-defined bridge is created and configured (`networks: - backend`)
-- +30 container auto restart after crash (`restart: always`)
-- +20 application is restarting upon changes implemented into src folder (`volumes: - ./src:/server/src`)
-- +30 database files and logs to be stored in volumes instead of container (`volumes: - postgres-data:/var/lib/postgresql/data`)
+- +30 user-defined bridge is created and configured
+  - `networks: - backend`
+- +30 container auto restart after crash
+  - `restart: always`
+- +20 application is restarting upon changes implemented into src folder
+  - `volumes: - ./src:/server/src`
+- +30 database files and logs to be stored in volumes instead of container:
+  - `postgres-data:/var/lib/postgresql/data`
+  - `postgres-logs:/var/log/postgresql`
 
 ### 2) Database (PostgreSQL) & ORM
 - +20 Users data is stored in PostgreSQL database and typeorm interacts with the database to manipulate data.
