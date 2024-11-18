@@ -20,6 +20,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "typeorm": "npm run build && npx typeorm -d dist/postgres_db/data-source.js",
+    "migration:generate": "npm run typeorm -- migration:generate postgres_db/migrations/CreateTables -o",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert",
     "docker:start": "docker compose up",
     "docker:scanServer": "docker scout cves alexandrchazov/nodejs2024q3-service-server",
     "docker:scanDB": "docker scout cves alexandrchazov/nodejs2024q3-service-db"

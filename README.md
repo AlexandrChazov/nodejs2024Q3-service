@@ -44,8 +44,8 @@ Score: 310/360
   - `image: alexandrchazov/nodejs2024q3-service-db:latest`
 
 
-- +10 Variables used for connection to database to be stored in `.env`
+- +30 Migrations are used to create database entities
 - +10 typeorm decorators create relations between entities
 - +30 Local PostgreSQL installation is not required for task check, connection is implemented to database stored in docker container
 
-### Total score: 310/360
+### Total score: 330/360

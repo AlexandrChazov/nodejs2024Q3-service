@@ -1,6 +1,5 @@
 node_modules
 dist
-postgres_db
 Dockerfile
 README.md
 test

@@ -13,6 +13,7 @@ services:
     networks:
       - backend
     restart: always
+    command: ["sh", "-c", "npm run migration:run && npm run start:dev"]
 
   db:
 #    build: ./postgres_db
