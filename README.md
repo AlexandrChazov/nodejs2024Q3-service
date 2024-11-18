@@ -4,7 +4,7 @@ Task link: "https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignm
 
 Done 18.11.2024 \
 Deadline 19.11.2024 \
-Score: 310/360
+Score: 360/360
 
 ## Steps to get started:
 - clone repository: `git clone https://github.com/AlexandrChazov/nodejs2024Q3-service.git`
@@ -36,18 +36,19 @@ Score: 310/360
 
 ### 3) Advanced Scope
 
+- +20 Final size of the Docker image with application is less than 500 MB
 - +10 Implemented npm script for vulnerabilities scanning (free solution)
   - `npm run docker:scanServer`
   - `npm run docker:scanDB`
 - +20 Your built image is pushed to DockerHub
   - `image: alexandrchazov/nodejs2024q3-service-server:latest`
   - `image: alexandrchazov/nodejs2024q3-service-db:latest`
-- +20 Final size of the Docker image with application is less than 500 MB
 
 
 - +30 Migrations are used to create database entities
   - `CMD ["sh", "-c", "npm run migration:run && npm run start:dev"]`
+- +10 Variables used for connection to database to be stored in .env
 - +10 typeorm decorators create relations between entities
 - +30 Local PostgreSQL installation is not required for task check, connection is implemented to database stored in docker container
 
-### Total score: 350/360
+### Total score: 360/360
