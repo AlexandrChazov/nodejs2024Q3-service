@@ -12,7 +12,7 @@ Score: 310/360
 - checkout to the 'dev' branch: `git checkout dev`
 - install dependencies: `npm install`
 - start Docker desktop app locally on your machine
-- run docker container: `docker compose up`
+- run docker container: `npm run docker:start`
 
 ## Steps to check:
 ### 1) Cotainerization, Docker
