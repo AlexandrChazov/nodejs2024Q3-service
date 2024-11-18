@@ -1,6 +1,7 @@
 services:
   server:
-    build: .
+#    build: .
+    image: alexandrchazov/nodejs2024q3-service-server:latest
     container_name: server
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
@@ -14,7 +15,8 @@ services:
     restart: always
 
   db:
-    build: ./postgres_db
+#    build: ./postgres_db
+    image: alexandrchazov/nodejs2024q3-service-db:latest
     container_name: db
     ports:
       - "5431:${DB_PORT}"

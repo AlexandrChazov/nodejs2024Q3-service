@@ -1,10 +1,10 @@
 ## REST Service
 
-Task link: "https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md"
+Task link: "https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization-database-orm/assignment.md"
 
-Done 10.11.2024 \
-Deadline 12.11.2024 \
-Score: 760/760
+Done 18.11.2024 \
+Deadline 19.11.2024 \
+Score: 300/360
 
 ## Steps to get started:
 - clone repository: `git clone https://github.com/AlexandrChazov/nodejs2024Q3-service.git`
@@ -37,6 +37,9 @@ Score: 760/760
 ### 3) Advanced Scope
 
 - +20 Your built image is pushed to DockerHub
+  - `image: alexandrchazov/nodejs2024q3-service-server:latest`
+  - `image: alexandrchazov/nodejs2024q3-service-db:latest`
+
 
 - +10 Variables used for connection to database to be stored in `.env`
 - +10 typeorm decorators create relations between entities
