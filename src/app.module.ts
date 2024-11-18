@@ -19,9 +19,7 @@ import { UserModule } from "./modules/user/user.module";
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({
-			envFilePath: ".env",
-		}),
+		ConfigModule.forRoot(),
 		TypeOrmModule.forRoot({
 			type: "postgres",
 			host: process.env.DB_HOST,
@@ -41,7 +39,6 @@ import { UserModule } from "./modules/user/user.module";
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
-		ConfigModule.forRoot(),
 		UserModule,
 		TrackModule,
 		ArtistModule,
