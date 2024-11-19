@@ -9,7 +9,7 @@ Score: 360/360
 ## Steps to get started:
 - clone repository: `git clone https://github.com/AlexandrChazov/nodejs2024Q3-service.git`
 - open folder with project
-- checkout to the 'dev' branch: `git checkout dev`
+- checkout to the 'dev' branch: `git checkout dev2`
 - install dependencies: `npm install`
 - start Docker desktop app locally on your machine
 - run docker container: `npm run docker:start`
