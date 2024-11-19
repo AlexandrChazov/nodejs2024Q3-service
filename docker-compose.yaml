@@ -1,0 +1,41 @@
+services:
+  server:
+#    build: .
+    image: alexandrchazov/nodejs2024q3-service-server:latest
+    container_name: server
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - db
+    volumes:
+      - ./src:/server/src
+      - /server/node_modules
+    networks:
+      - backend
+    restart: always
+
+  db:
+#    build: ./postgres_db
+    image: alexandrchazov/nodejs2024q3-service-db:latest
+    container_name: db
+    ports:
+      - "5431:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - postgres-logs:/var/log/postgresql
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+  postgres-logs:
+    driver: local
