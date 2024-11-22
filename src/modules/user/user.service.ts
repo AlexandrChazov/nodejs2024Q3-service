@@ -1,10 +1,11 @@
 import {
+	BadRequestException,
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { hash } from "bcrypt";
+import { compare, hash } from "bcrypt";
 import { Repository } from "typeorm";
 
 import { User } from "../../types";
@@ -37,6 +38,10 @@ export class UserService {
 	}
 
 	async create(dto: CreateUserDto) {
+		const isUserExist = await this.getByLogin(dto.login);
+		if (isUserExist) {
+			throw new BadRequestException("User with such login already exists");
+		}
 		const newUser = new UserEntity();
 		newUser.login = dto.login;
 		newUser.password = await hash(dto.password, Number(process.env.CRYPT_SALT));
@@ -56,8 +61,9 @@ export class UserService {
 			throw new NotFoundException("User not found");
 		}
 		const oldPassword = user.password;
-		if (oldPassword !== dto.oldPassword) {
-			throw new ForbiddenException("Forbidden");
+		const isPassed = await compare(dto.oldPassword, oldPassword);
+		if (!isPassed) {
+			throw new ForbiddenException("Password is incorrect");
 		}
 		user.password = await hash(dto.newPassword, Number(process.env.CRYPT_SALT));
 		user.version += 1;
