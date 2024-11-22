@@ -17,17 +17,18 @@ export class AuthService {
 		private tokenService: TokenService,
 	) {}
 
-	async signup(body: CredentialsDto): Promise<Tokens> {
+	async signup(body: CredentialsDto): Promise<Tokens & { id: string }> {
 		const { login } = body;
 		const existedUser = await this.usersService.getByLogin(login);
 		if (existedUser) {
 			throw new BadRequestException("User with such login already exists");
 		}
 		const newUser = await this.usersService.create(body);
-		return this.tokenService.generateTokens({
+		const tokens = await this.tokenService.generateTokens({
 			userId: newUser.id,
 			login: newUser.login,
 		});
+		return { ...tokens, id: newUser.id };
 	}
 
 	async login(body: CredentialsDto): Promise<Tokens> {
@@ -44,12 +45,12 @@ export class AuthService {
 				"User with such login and password not found",
 			);
 		}
-		return this.tokenService.generateTokens({ userId: user.id, login });
+		return await this.tokenService.generateTokens({ userId: user.id, login });
 	}
 
 	async refresh(refreshToken: string): Promise<Tokens> {
 		const tokenPayload = await this.tokenService.validate(refreshToken);
-		return this.tokenService.generateTokens({
+		return await this.tokenService.generateTokens({
 			userId: tokenPayload.userId,
 			login: tokenPayload.login,
 		});
