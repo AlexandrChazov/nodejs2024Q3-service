@@ -1,15 +1,13 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
-import { TokenPayload } from "../../types";
+import { TokenPayload, Tokens } from "../../types";
 
 @Injectable()
 export class TokenService {
 	constructor(private readonly jwtService: JwtService) {}
 
-	async generateTokens(
-		payload: TokenPayload,
-	): Promise<{ accessToken: string; refreshToken: string }> {
+	async generateTokens(payload: TokenPayload): Promise<Tokens> {
 		return {
 			accessToken: this.jwtService.sign(payload, {
 				secret: process.env.JWT_SECRET_KEY,
