@@ -30,4 +30,12 @@ export class AuthService {
 		}
 		return this.tokenService.generateTokens({ userId: user.id, login });
 	}
+
+	async refresh(refreshToken: string) {
+		const tokenPayload = await this.tokenService.validate(refreshToken);
+		return this.tokenService.generateTokens({
+			userId: tokenPayload.userId,
+			login: tokenPayload.login,
+		});
+	}
 }
