@@ -23,6 +23,7 @@ export class AuthController {
 		return this.authService.login(body);
 	}
 
+	@Public()
 	@HttpCode(StatusCodes.OK)
 	@Post("refresh")
 	refresh(@Body() body: RefreshDto) {

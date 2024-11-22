@@ -2,6 +2,7 @@ import {
 	BadRequestException,
 	ForbiddenException,
 	Injectable,
+	UnauthorizedException,
 } from "@nestjs/common";
 import { compare } from "bcrypt";
 
@@ -49,6 +50,9 @@ export class AuthService {
 	}
 
 	async refresh(refreshToken: string): Promise<Tokens> {
+		if (!refreshToken) {
+			throw new UnauthorizedException("Refresh token is undefined");
+		}
 		const tokenPayload = await this.tokenService.validate(refreshToken);
 		return await this.tokenService.generateTokens({
 			userId: tokenPayload.userId,
