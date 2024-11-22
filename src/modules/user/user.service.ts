@@ -4,6 +4,7 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { hash } from "bcrypt";
 import { Repository } from "typeorm";
 
 import { User } from "../../types";
@@ -29,10 +30,16 @@ export class UserService {
 		return { ...user, password: undefined };
 	}
 
+	async getByLogin(login: string): Promise<UserEntity> {
+		return await this.userRepository.findOne({
+			where: { login },
+		});
+	}
+
 	async create(dto: CreateUserDto) {
 		const newUser = new UserEntity();
 		newUser.login = dto.login;
-		newUser.password = dto.password;
+		newUser.password = await hash(dto.password, Number(process.env.CRYPT_SALT));
 		newUser.version = 1;
 		await this.userRepository.save(newUser);
 		return {
@@ -52,7 +59,7 @@ export class UserService {
 		if (oldPassword !== dto.oldPassword) {
 			throw new ForbiddenException("Forbidden");
 		}
-		user.password = dto.newPassword;
+		user.password = await hash(dto.newPassword, Number(process.env.CRYPT_SALT));
 		user.version += 1;
 		await this.userRepository.save(user);
 		return {

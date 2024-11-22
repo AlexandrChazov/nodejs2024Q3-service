@@ -6,7 +6,9 @@ import { DataSource } from "typeorm";
 import { dataSourceOptions } from "../postgres_db";
 import { AlbumModule } from "./modules/album/album.module";
 import { ArtistModule } from "./modules/artist/artist.module";
+import { AuthModule } from "./modules/auth/auth.module";
 import { FavoriteModule } from "./modules/favorite/favorite.module";
+import { TokenModule } from "./modules/token/token.module";
 import { TrackModule } from "./modules/track/track.module";
 import { UserModule } from "./modules/user/user.module";
 
@@ -14,11 +16,13 @@ import { UserModule } from "./modules/user/user.module";
 	imports: [
 		ConfigModule.forRoot(),
 		TypeOrmModule.forRoot(dataSourceOptions),
-		UserModule,
-		TrackModule,
-		ArtistModule,
 		AlbumModule,
+		ArtistModule,
+		AuthModule,
 		FavoriteModule,
+		TokenModule,
+		TrackModule,
+		UserModule,
 	],
 })
 export class AppModule {
