@@ -1,5 +1,7 @@
 import { Injectable, LoggerService } from "@nestjs/common";
 
+import { LogLevel } from "../types";
+
 const resetColor = "\x1b[0m";
 const blue = "\x1b[34m";
 const green = "\x1b[32m";
@@ -7,31 +9,40 @@ const red = "\x1b[31m";
 const yellow = "\x1b[33m";
 const brown = "\x1b[35m";
 const cyan = "\x1b[36m";
+const defaultLogLevels = `${LogLevel.log},${LogLevel.error},${LogLevel.warn},${LogLevel.debug},${LogLevel.verbose}`;
 
 @Injectable()
 export class LoggerServiceCustom implements LoggerService {
-	log(message: any, ...optionalParams: any[]) {
-		this.writeLog("LOG", message, green);
-	}
+	logLevels: string[] = (process.env.LOG_LEVELS || defaultLogLevels).split(",");
 
-	fatal(message: any, ...optionalParams: any[]) {
-		this.writeLog("FATAL", message, cyan);
+	log(message: any, ...optionalParams: any[]) {
+		if (this.logLevels.includes(LogLevel.log)) {
+			this.writeLog("LOG", message, green);
+		}
 	}
 
 	error(message: any, ...optionalParams: any[]) {
-		this.writeLog("ERROR", message, red);
+		if (this.logLevels.includes(LogLevel.error)) {
+			this.writeLog("ERROR", message, red);
+		}
 	}
 
 	warn(message: any, ...optionalParams: any[]) {
-		this.writeLog("WARN", message, brown);
+		if (this.logLevels.includes(LogLevel.warn)) {
+			this.writeLog("WARN", message, brown);
+		}
 	}
 
 	debug?(message: any, ...optionalParams: any[]) {
-		this.writeLog("DEBUG", message, blue);
+		if (this.logLevels.includes(LogLevel.debug)) {
+			this.writeLog("DEBUG", message, blue);
+		}
 	}
 
 	verbose?(message: any, ...optionalParams: any[]) {
-		this.writeLog("VERBOSE", message, yellow);
+		if (this.logLevels.includes(LogLevel.verbose)) {
+			this.writeLog("VERBOSE", message, yellow);
+		}
 	}
 
 	private writeLog(level: string, message: string, color: string) {

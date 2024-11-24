@@ -5,3 +5,4 @@ export type { TokenPayload } from "./TokenPayload";
 export type { Tokens } from "./Tokens";
 export type { Track } from "./Track";
 export type { User } from "./User";
+export { LogLevel } from "./enums";
