@@ -11,6 +11,15 @@ async function bootstrap() {
 		logger: new LoggerServiceCustom(),
 	});
 	app.useGlobalPipes(new ValidationPipe());
+
+	const loggerService = app.get(LoggerServiceCustom);
+	process.on("uncaughtException", (error) => {
+		loggerService.error("Uncaught Exception", error.stack);
+	});
+	process.on("unhandledRejection", (reason) => {
+		loggerService.error("Unhandled Rejection", JSON.stringify(reason));
+	});
+
 	await app.listen(PORT);
 	console.log(`Server is running on PORT ${PORT}`);
 }
