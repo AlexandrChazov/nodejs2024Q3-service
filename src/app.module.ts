@@ -1,10 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { APP_INTERCEPTOR } from "@nestjs/core";
+import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 
 import { dataSourceOptions } from "../postgres_db";
+import { HttpExceptionFilter } from "./exceptions";
 import { LoggerInterceptor, LoggerModule } from "./logger";
 import { AlbumModule } from "./modules/album/album.module";
 import { ArtistModule } from "./modules/artist/artist.module";
@@ -19,6 +20,10 @@ import { UserModule } from "./modules/user/user.module";
 		{
 			provide: APP_INTERCEPTOR,
 			useClass: LoggerInterceptor,
+		},
+		{
+			provide: APP_FILTER,
+			useClass: HttpExceptionFilter,
 		},
 	],
 	imports: [
