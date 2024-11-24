@@ -1,12 +1,9 @@
 const { MigrationInterface, QueryRunner } = require("typeorm");
 
-module.exports = class CreateTables1731954393975 {
-	name = "CreateTables1731954393975";
+module.exports = class CreateTables1732460877511 {
+	name = "CreateTables1732460877511";
 
 	async up(queryRunner) {
-		await queryRunner.query(
-			`CREATE TABLE IF NOT EXISTS "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "login" character varying(255) NOT NULL, "password" character varying(255) NOT NULL, "version" integer NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
-		);
 		await queryRunner.query(
 			`CREATE TABLE IF NOT EXISTS "fav-artist" ("id" SERIAL NOT NULL, "artistId" uuid NOT NULL, CONSTRAINT "PK_8cff6c5b5647c3d31f6e48322dd" PRIMARY KEY ("id"))`,
 		);
@@ -25,24 +22,27 @@ module.exports = class CreateTables1731954393975 {
 		await queryRunner.query(
 			`CREATE TABLE IF NOT EXISTS "track" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(255) NOT NULL, "artistId" uuid, "albumId" uuid, "duration" integer NOT NULL, CONSTRAINT "PK_0631b9bcf521f8fab3a15f2c37e" PRIMARY KEY ("id"))`,
 		);
+		await queryRunner.query(
+			`CREATE TABLE IF NOT EXISTS "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "login" character varying(255) NOT NULL, "password" character varying(255) NOT NULL, "version" integer NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
+		);
 
 		await queryRunner.query(
-			`ALTER TABLE "track" DROP CONSTRAINT IF EXISTS "FK_b105d945c4c185395daca91606a"`,
-		);
-		await queryRunner.query(
-			`ALTER TABLE "track" DROP CONSTRAINT IF EXISTS "FK_997cfd9e91fd00a363500f72dc2"`,
-		);
-		await queryRunner.query(
-			`ALTER TABLE "fav-track" DROP CONSTRAINT IF EXISTS "FK_f743febd10a6ecb55153d113457"`,
-		);
-		await queryRunner.query(
-			`ALTER TABLE "album" DROP CONSTRAINT IF EXISTS "FK_3d06f25148a4a880b429e3bc839"`,
+			`ALTER TABLE "fav-artist" DROP CONSTRAINT IF EXISTS "FK_e6827071b8418ab7862a276c60b"`,
 		);
 		await queryRunner.query(
 			`ALTER TABLE "fav-album" DROP CONSTRAINT IF EXISTS "FK_0d352c5429938d93eacbb927b28"`,
 		);
 		await queryRunner.query(
-			`ALTER TABLE "fav-artist" DROP CONSTRAINT IF EXISTS "FK_e6827071b8418ab7862a276c60b"`,
+			`ALTER TABLE "album" DROP CONSTRAINT IF EXISTS "FK_3d06f25148a4a880b429e3bc839"`,
+		);
+		await queryRunner.query(
+			`ALTER TABLE "fav-track" DROP CONSTRAINT IF EXISTS "FK_f743febd10a6ecb55153d113457"`,
+		);
+		await queryRunner.query(
+			`ALTER TABLE "track" DROP CONSTRAINT IF EXISTS "FK_997cfd9e91fd00a363500f72dc2"`,
+		);
+		await queryRunner.query(
+			`ALTER TABLE "track" DROP CONSTRAINT IF EXISTS "FK_b105d945c4c185395daca91606a"`,
 		);
 
 		await queryRunner.query(
@@ -84,12 +84,12 @@ module.exports = class CreateTables1731954393975 {
 		await queryRunner.query(
 			`ALTER TABLE "fav-artist" DROP CONSTRAINT "FK_e6827071b8418ab7862a276c60b"`,
 		);
+		await queryRunner.query(`DROP TABLE "user"`);
 		await queryRunner.query(`DROP TABLE "track"`);
 		await queryRunner.query(`DROP TABLE "fav-track"`);
 		await queryRunner.query(`DROP TABLE "album"`);
 		await queryRunner.query(`DROP TABLE "fav-album"`);
 		await queryRunner.query(`DROP TABLE "artist"`);
 		await queryRunner.query(`DROP TABLE "fav-artist"`);
-		await queryRunner.query(`DROP TABLE "user"`);
 	}
 };
