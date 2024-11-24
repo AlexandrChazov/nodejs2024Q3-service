@@ -1,9 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 
 import { dataSourceOptions } from "../postgres_db";
+import { LoggerInterceptor, LoggerModule } from "./logger";
 import { AlbumModule } from "./modules/album/album.module";
 import { ArtistModule } from "./modules/artist/artist.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -13,6 +15,12 @@ import { TrackModule } from "./modules/track/track.module";
 import { UserModule } from "./modules/user/user.module";
 
 @Module({
+	providers: [
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: LoggerInterceptor,
+		},
+	],
 	imports: [
 		ConfigModule.forRoot(),
 		TypeOrmModule.forRoot(dataSourceOptions),
@@ -23,6 +31,7 @@ import { UserModule } from "./modules/user/user.module";
 		TokenModule,
 		TrackModule,
 		UserModule,
+		LoggerModule,
 	],
 })
 export class AppModule {
