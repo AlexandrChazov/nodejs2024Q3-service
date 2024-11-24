@@ -14,10 +14,14 @@ async function bootstrap() {
 
 	const loggerService = app.get(LoggerServiceCustom);
 	process.on("uncaughtException", (error) => {
-		loggerService.error("Uncaught Exception", error.stack);
+		loggerService.error(
+			`Uncaught Exception: ${JSON.stringify(error.stack, null, 2)}`,
+		);
 	});
 	process.on("unhandledRejection", (reason) => {
-		loggerService.error("Unhandled Rejection", JSON.stringify(reason));
+		loggerService.error(
+			`Unhandled Rejection: ${JSON.stringify(reason, null, 2)}`,
+		);
 	});
 
 	await app.listen(PORT);

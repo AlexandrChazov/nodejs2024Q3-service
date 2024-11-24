@@ -1,6 +1,11 @@
 import { Injectable, LoggerService } from "@nestjs/common";
-import { constants } from "node:fs";
-import { access, mkdir, writeFile } from "node:fs/promises";
+import {
+	existsSync,
+	mkdirSync,
+	renameSync,
+	statSync,
+	writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 
 import { LogLevel } from "../types";
@@ -16,8 +21,17 @@ const defaultLogLevels = `${LogLevel.log},${LogLevel.error},${LogLevel.warn},${L
 
 @Injectable()
 export class LoggerServiceCustom implements LoggerService {
-	logLevels: string[] = (process.env.LOG_LEVELS || defaultLogLevels).split(",");
-	logsFolderPath: string = join(__dirname, "..", "..", "logs");
+	private readonly maxFileSize: number;
+	private readonly logLevels: string[];
+	private readonly logsFolderPath: string;
+
+	constructor() {
+		this.maxFileSize = Number(process.env.LOG_FILE_MAX_SIZE_KB || 1024) * 1024; // Convert to bytes
+		this.logLevels = (process.env.LOG_LEVELS || defaultLogLevels).split(",");
+		this.logsFolderPath = join(__dirname, "..", "..", "logs");
+
+		this.createLogFile();
+	}
 
 	log(message: any, ...optionalParams: any[]) {
 		if (this.logLevels.includes(LogLevel.log)) {
@@ -54,25 +68,35 @@ export class LoggerServiceCustom implements LoggerService {
 		}
 	}
 
-	private async writeLog(level: LogLevel, message: string): Promise<void> {
-		try {
-			await access(this.logsFolderPath, constants.F_OK);
-		} catch {
-			await mkdir(this.logsFolderPath, { recursive: true });
-		}
-		await writeFile(
-			join(this.logsFolderPath, fileName(level)),
-			`${getDate()} ${message}\n`,
-			{
-				encoding: "utf-8",
-				flag: "a",
-			},
-		);
+	private writeLog(level: LogLevel, message: string): void {
+		const filePath = join(this.logsFolderPath, fileName(level));
+		writeFileSync(filePath, `${getDate()} ${message}\n`, {
+			encoding: "utf-8",
+			flag: "a",
+		});
+		this.checkLogRotation(filePath);
 	}
 
 	private printLog(level: LogLevel, message: string, color: string): void {
 		const logMessage = `${getDate()} ${color} [${level}] ${resetColor} ${message}`;
 		process.stdout.write(`${logMessage}\n`);
+	}
+
+	private checkLogRotation(filePath: string): void {
+		const stats = statSync(filePath);
+		if (stats.size > this.maxFileSize) {
+			const newName = filePath.replace(
+				/\.log$/g,
+				` (${new Date().getTime()}).log`,
+			);
+			renameSync(filePath, newName);
+		}
+	}
+
+	private createLogFile(): void {
+		if (!existsSync(this.logsFolderPath)) {
+			mkdirSync(this.logsFolderPath, { recursive: true });
+		}
 	}
 }
 
