@@ -21,7 +21,7 @@ export class LoggerServiceCustom implements LoggerService {
 	constructor() {
 		this.maxFileSize = Number(process.env.LOG_FILE_MAX_SIZE_KB || 1024) * 1024; // Convert to bytes
 		this.logLevels = Number(process.env.LOG_LEVEL || 2);
-		this.logsFolderPath = join(__dirname, "..", "..", "logs");
+		this.logsFolderPath = join(process.cwd(), "logs");
 
 		this.createLogFile();
 	}

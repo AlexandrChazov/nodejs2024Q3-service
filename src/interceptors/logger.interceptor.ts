@@ -22,7 +22,7 @@ export class LoggerInterceptor implements NestInterceptor {
 		this.loggerService.log(`Request body - ${log(req.body)}`);
 		this.loggerService.log(`Response status code - ${res.statusCode}`);
 
-		return next.handle().pipe(tap(() => console.log("")));
+		return next.handle().pipe(tap());
 	}
 }
 
