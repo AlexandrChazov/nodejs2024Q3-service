@@ -6,7 +6,8 @@ import { DataSource } from "typeorm";
 
 import { dataSourceOptions } from "../postgres_db";
 import { HttpExceptionFilter } from "./exceptions";
-import { LoggerInterceptor, LoggerModule } from "./logger";
+import { LoggerInterceptor } from "./interceptors";
+import { LoggerModule } from "./logger";
 import { AlbumModule } from "./modules/album/album.module";
 import { ArtistModule } from "./modules/artist/artist.module";
 import { AuthModule } from "./modules/auth/auth.module";
