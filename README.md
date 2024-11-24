@@ -38,7 +38,7 @@ Score: 340/340
 
 ### 1) Logging & Error Handling:
 
-- **+20** Logs are written to a file (`dist/logs`).
+- **+20** Logs are written to a file (`root_dir/logs`).
 - **+10** Logs files are rotated with size.
 - **+10** Add environment variable to specify max file size (`LOG_FILE_MAX_SIZE_KB`).
 - **+10** Error logs are written to a separate file.
