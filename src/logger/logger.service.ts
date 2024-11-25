@@ -23,7 +23,7 @@ export class LoggerServiceCustom implements LoggerService {
 		this.logLevels = Number(process.env.LOG_LEVEL || 2);
 		this.logsFolderPath = join(process.cwd(), "logs");
 
-		this.createLogFile();
+		this.createLogsFolder();
 	}
 
 	log(message: any, ...optionalParams: any[]) {
@@ -86,7 +86,7 @@ export class LoggerServiceCustom implements LoggerService {
 		}
 	}
 
-	private createLogFile(): void {
+	private createLogsFolder(): void {
 		if (!existsSync(this.logsFolderPath)) {
 			mkdirSync(this.logsFolderPath, { recursive: true });
 		}

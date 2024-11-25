@@ -5,8 +5,8 @@ import {
 	NestInterceptor,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
 
+import { parseObj } from "../lib";
 import { LoggerServiceCustom } from "../logger";
 
 @Injectable()
@@ -16,19 +16,18 @@ export class LoggerInterceptor implements NestInterceptor {
 	intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
 		//@ts-expect-error: field args is private in ExecutionContextHost
 		const [req, res] = context.args;
+		const { body, params, url } = req;
+		const { statusCode } = res;
 
-		this.loggerService.log(`Request url - ${req.url}`);
-		this.loggerService.log(`Request params - ${log(req.params)}`);
-		this.loggerService.log(`Request body - ${log(req.body)}`);
-		this.loggerService.log(`Response status code - ${res.statusCode}`);
+		this.loggerService.log(`Request URL - ${url}`);
+		if (Object.keys(params).length) {
+			this.loggerService.log(`Request PARAMS - ${parseObj(params)}`);
+		}
+		if (Object.keys(body).length) {
+			this.loggerService.log(`Request BODY - ${parseObj(body)}`);
+		}
+		this.loggerService.log(`Response STATUS CODE - ${statusCode}`);
 
-		return next.handle().pipe(tap());
+		return next.handle();
 	}
-}
-
-function log(arg: Record<string, string>): string {
-	return Object.entries(arg).reduce((acc, [key, value]) => {
-		acc += `${key}: ${value}, `;
-		return acc;
-	}, "");
 }
